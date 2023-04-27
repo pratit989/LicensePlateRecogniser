@@ -27,7 +27,6 @@ dependencies:
     sdk: flutter
   auto_size_text: 3.0.0
   cached_network_image: 3.2.1
-  camera: ^0.10.4
   easy_debounce: 2.0.1
   equatable: 2.0.3
   file_picker: 5.2.6
