@@ -29,6 +29,7 @@ class _LocalImageViewerState extends State<LocalImageViewer> {
       widget.imageData.bytes ?? Uint8List(0),
       width: widget.width,
       height: widget.height,
+      fit: BoxFit.fill,
       errorBuilder: (_, __, ___) => Container(
         height: widget.height,
         width: widget.width,
