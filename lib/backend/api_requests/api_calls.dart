@@ -23,6 +23,7 @@ class PlateRecognizerAPIGroup {
 class ReadNumberPlatesFromAnImageCall {
   Future<ApiCallResponse> call({
     FFUploadedFile? upload,
+    String? uploadUrl = '',
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'Read Number Plates from an Image',
@@ -32,6 +33,7 @@ class ReadNumberPlatesFromAnImageCall {
         ...PlateRecognizerAPIGroup.headers,
       },
       params: {
+        'upload_url': uploadUrl,
         'upload': upload,
       },
       bodyType: BodyType.MULTIPART,
@@ -41,6 +43,15 @@ class ReadNumberPlatesFromAnImageCall {
       cache: false,
     );
   }
+
+  dynamic plateNumber(dynamic response) => getJsonField(
+        response,
+        r'''$.results[:].plate''',
+      );
+  dynamic timeStamp(dynamic response) => getJsonField(
+        response,
+        r'''$.timestamp''',
+      );
 }
 
 /// End Plate Recognizer API Group Code
