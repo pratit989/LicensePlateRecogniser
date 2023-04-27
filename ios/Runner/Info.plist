@@ -43,7 +43,8 @@
 	<true/>
 
 
-
+	<key>NSCameraUsageDescription</key>
+    <string>this app requires access to camera to provide the functionality of clicking pictures</string>
 
 
 	<key>UILaunchStoryboardName</key>
