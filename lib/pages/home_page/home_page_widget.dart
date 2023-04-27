@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -57,6 +58,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 0.0),
                   child: Stack(
                     children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Icon(
+                            Icons.camera_alt_outlined,
+                            color: Colors.black,
+                            size: 60.0,
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 16.0, 0.0, 0.0),
+                            child: Text(
+                              'Capture License Plate',
+                              textAlign: TextAlign.center,
+                              style: FlutterFlowTheme.of(context).titleLarge,
+                            ),
+                          ),
+                        ],
+                      ),
                       InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -137,34 +159,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               width: double.infinity,
                               height: double.infinity,
                               decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
+                                color: Color(0xCBFFFFFF),
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.camera_alt_outlined,
-                                    color: FlutterFlowTheme.of(context).accent3,
-                                    size: 60.0,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 16.0, 0.0, 0.0),
-                                    child: Text(
-                                      'Capture License Plate',
-                                      style: FlutterFlowTheme.of(context)
-                                          .titleLarge
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: FlutterFlowTheme.of(context)
-                                                .accent3,
-                                          ),
-                                    ),
-                                  ),
-                                ],
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 1.0,
+                                height:
+                                    MediaQuery.of(context).size.height * 1.0,
+                                child: custom_widgets.LocalImageViewer(
+                                  width:
+                                      MediaQuery.of(context).size.width * 1.0,
+                                  height:
+                                      MediaQuery.of(context).size.height * 1.0,
+                                  imageData: _model.uploadedLocalFile,
+                                ),
                               ),
                             ),
                           ),
