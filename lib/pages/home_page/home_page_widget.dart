@@ -65,7 +65,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         children: [
                           Icon(
                             Icons.camera_alt_outlined,
-                            color: Colors.black,
+                            color: FlutterFlowTheme.of(context).primaryText,
                             size: 60.0,
                           ),
                           Padding(
@@ -74,7 +74,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             child: Text(
                               'Capture License Plate',
                               textAlign: TextAlign.center,
-                              style: FlutterFlowTheme.of(context).titleLarge,
+                              style: FlutterFlowTheme.of(context)
+                                  .titleLarge
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                  ),
                             ),
                           ),
                         ],
@@ -134,16 +140,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               .call(
                             upload: _model.uploadedLocalFile,
                           );
-                          if ((_model.apiResultrmk?.succeeded ?? true)) {
-                            setState(() {
-                              _model.plateNumber = PlateRecognizerAPIGroup
-                                  .readNumberPlatesFromAnImageCall
-                                  .plateNumber(
-                                    (_model.apiResultrmk?.jsonBody ?? ''),
-                                  )
-                                  .toString();
-                            });
-                          }
 
                           setState(() {});
                         },
@@ -183,166 +179,178 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
               ),
               Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 0.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).warning,
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                16.0, 8.0, 16.0, 8.0),
-                            child: Text(
-                              _model.plateNumber!,
-                              textAlign: TextAlign.center,
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 24.0,
-                                    fontWeight: FontWeight.w800,
-                                  ),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context).warning,
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 8.0, 16.0, 8.0),
+                              child: Text(
+                                (String? plateNumber) {
+                                  return (plateNumber ?? "").toUpperCase();
+                                }(PlateRecognizerAPIGroup
+                                    .readNumberPlatesFromAnImageCall
+                                    .plateNumber(
+                                      (_model.apiResultrmk?.jsonBody ?? ''),
+                                    )
+                                    .toString()),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black,
+                                      fontSize: 24.0,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
-                            },
-                            text: 'Number Correct',
-                            options: FFButtonOptions(
-                              width: 130.0,
-                              height: 40.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              color: FlutterFlowTheme.of(context).primary,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                  ),
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            FFButtonWidget(
+                              onPressed: () {
+                                print('Button pressed ...');
+                              },
+                              text: 'Number Correct',
+                              options: FFButtonOptions(
+                                width: 130.0,
+                                height: 40.0,
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white,
+                                    ),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                            FFButtonWidget(
+                              onPressed: () {
+                                print('Button pressed ...');
+                              },
+                              text: 'Enter Manually',
+                              options: FFButtonOptions(
+                                width: 130.0,
+                                height: 40.0,
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white,
+                                    ),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            0.0, 20.0, 0.0, 20.0),
+                        child: TextFormField(
+                          controller: _model.textController,
+                          onChanged: (_) => EasyDebounce.debounce(
+                            '_model.textController',
+                            Duration(milliseconds: 2000),
+                            () => setState(() {}),
+                          ),
+                          textCapitalization: TextCapitalization.characters,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            hintText: 'License Plate Number',
+                            hintStyle: FlutterFlowTheme.of(context).bodySmall,
+                            enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors.transparent,
+                                color: FlutterFlowTheme.of(context).accent3,
                                 width: 1.0,
                               ),
                               borderRadius: BorderRadius.circular(8.0),
                             ),
-                          ),
-                          FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
-                            },
-                            text: 'Enter Manually',
-                            options: FFButtonOptions(
-                              width: 130.0,
-                              height: 40.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              color: FlutterFlowTheme.of(context).primary,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                  ),
+                            focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors.transparent,
+                                color: FlutterFlowTheme.of(context).accent2,
                                 width: 1.0,
                               ),
                               borderRadius: BorderRadius.circular(8.0),
                             ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).error,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).error,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            suffixIcon: _model.textController!.text.isNotEmpty
+                                ? InkWell(
+                                    onTap: () async {
+                                      _model.textController?.clear();
+                                      setState(() {});
+                                    },
+                                    child: Icon(
+                                      Icons.clear,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      size: 22,
+                                    ),
+                                  )
+                                : null,
                           ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(
-                          20.0, 20.0, 20.0, 20.0),
-                      child: TextFormField(
-                        controller: _model.textController,
-                        onChanged: (_) => EasyDebounce.debounce(
-                          '_model.textController',
-                          Duration(milliseconds: 2000),
-                          () => setState(() {}),
+                          style: FlutterFlowTheme.of(context).bodyMedium,
+                          minLines: 1,
+                          validator: _model.textControllerValidator
+                              .asValidator(context),
                         ),
-                        textCapitalization: TextCapitalization.characters,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          hintText: 'License Plate Number',
-                          hintStyle: FlutterFlowTheme.of(context).bodySmall,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).accent3,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).accent2,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).error,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).error,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          suffixIcon: _model.textController!.text.isNotEmpty
-                              ? InkWell(
-                                  onTap: () async {
-                                    _model.textController?.clear();
-                                    setState(() {});
-                                  },
-                                  child: Icon(
-                                    Icons.clear,
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    size: 22,
-                                  ),
-                                )
-                              : null,
-                        ),
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                        minLines: 1,
-                        validator:
-                            _model.textControllerValidator.asValidator(context),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
