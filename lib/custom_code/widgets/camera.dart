@@ -20,6 +20,7 @@ Future<String> path(CaptureMode captureMode) async {
   final String fileExtension = captureMode == CaptureMode.photo ? 'jpg' : 'mp4';
   final String filePath =
       '${testDir.path}/${DateTime.now().millisecondsSinceEpoch}.$fileExtension';
+  FFAppState().update(() => FFAppState().uploadedFilePath = filePath);
   return filePath;
 }
 
