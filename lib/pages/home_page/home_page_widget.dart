@@ -171,22 +171,39 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   color: Color(0xCBFFFFFF),
                                   borderRadius: BorderRadius.circular(16.0),
                                 ),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 1.0,
-                                  height:
-                                      MediaQuery.of(context).size.height * 1.0,
-                                  child: custom_widgets.Camera(
+                                child: Visibility(
+                                  visible:
+                                      FFAppState().uploadedFilePath == null ||
+                                          FFAppState().uploadedFilePath == '',
+                                  child: Container(
                                     width:
                                         MediaQuery.of(context).size.width * 1.0,
                                     height: MediaQuery.of(context).size.height *
                                         1.0,
+                                    child: custom_widgets.Camera(
+                                      width: MediaQuery.of(context).size.width *
+                                          1.0,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              1.0,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
+                        if (FFAppState().uploadedFilePath != null &&
+                            FFAppState().uploadedFilePath != '')
+                          Container(
+                            width: MediaQuery.of(context).size.width * 1.0,
+                            height: MediaQuery.of(context).size.height * 1.0,
+                            child: custom_widgets.ImageFromFilePath(
+                              width: MediaQuery.of(context).size.width * 1.0,
+                              height: MediaQuery.of(context).size.height * 1.0,
+                              imgFilePath: FFAppState().uploadedFilePath,
+                            ),
+                          ),
                       ],
                     ),
                   ),
