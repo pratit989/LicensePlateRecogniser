@@ -45,15 +45,12 @@ class _CameraState extends State<Camera> {
       width: widget.width,
       color: Colors.white,
       child: CameraAwesomeBuilder.awesome(
-        saveConfig: SaveConfig.photoAndVideo(
-          photoPathBuilder: () => path(CaptureMode.photo),
-          videoPathBuilder: () => path(CaptureMode.video),
-          initialCaptureMode: CaptureMode.photo,
+        saveConfig: SaveConfig.photo(
+          pathBuilder: () => path(CaptureMode.photo),
         ),
         enablePhysicalButton: true,
-        filter: AwesomeFilter.AddictiveRed,
         flashMode: FlashMode.auto,
-        aspectRatio: CameraAspectRatios.ratio_16_9,
+        aspectRatio: CameraAspectRatios.ratio_1_1,
         previewFit: CameraPreviewFit.fitWidth,
         onMediaTap: (mediaCapture) {
           OpenFile.open(mediaCapture.filePath);
