@@ -41,22 +41,18 @@ class Camera extends StatefulWidget {
 class _CameraState extends State<Camera> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.height,
-      width: widget.width,
-      color: Colors.white,
-      child: CameraAwesomeBuilder.awesome(
-        saveConfig: SaveConfig.photo(
-          pathBuilder: () => path(CaptureMode.photo),
-        ),
-        enablePhysicalButton: true,
-        flashMode: FlashMode.auto,
-        aspectRatio: CameraAspectRatios.ratio_1_1,
-        previewFit: CameraPreviewFit.fitWidth,
-        onMediaTap: (mediaCapture) {
-          OpenFile.open(mediaCapture.filePath);
-        },
+    return CameraAwesomeBuilder.awesome(
+      saveConfig: SaveConfig.photo(
+        pathBuilder: () => path(CaptureMode.photo),
       ),
+      enablePhysicalButton: true,
+      filter: AwesomeFilter.None,
+      flashMode: FlashMode.auto,
+      aspectRatio: CameraAspectRatios.ratio_1_1,
+      previewFit: CameraPreviewFit.fitWidth,
+      onMediaTap: (mediaCapture) {
+        OpenFile.open(mediaCapture.filePath);
+      },
     );
   }
 }
