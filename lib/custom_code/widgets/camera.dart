@@ -41,7 +41,42 @@ class Camera extends StatefulWidget {
 class _CameraState extends State<Camera> {
   @override
   Widget build(BuildContext context) {
-    return CameraAwesomeBuilder.awesome(
+    return CameraAwesomeBuilder.custom(
+      builder: (cameraState, previewSize, previewRect) {
+        return cameraState.when(
+          onPreparingCamera: (state) =>
+              const Center(child: CircularProgressIndicator()),
+          onPhotoMode: (state) => Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AwesomeTopActions(
+                state: state,
+                children: [
+                  AwesomeFlashButton(
+                    state: state,
+                  ),
+                ],
+              ),
+              AwesomeBottomActions(
+                // CameraState is required
+                state: state,
+                // Padding around the bottom actions
+                padding: const EdgeInsets.only(
+                  bottom: 16,
+                  left: 8,
+                  right: 8,
+                ),
+                // Widget to the left of the captureButton
+                left: Container(),
+                // Widget to the right of the captureButton
+                right: Container(),
+                // Callback used by default values. Don't specify it if you override left and right widgets.
+                onMediaTap: null,
+              ),
+            ],
+          ),
+        );
+      },
       saveConfig: SaveConfig.photo(
         pathBuilder: () => path(CaptureMode.photo),
       ),
@@ -50,9 +85,6 @@ class _CameraState extends State<Camera> {
       flashMode: FlashMode.auto,
       aspectRatio: CameraAspectRatios.ratio_1_1,
       previewFit: CameraPreviewFit.fitWidth,
-      onMediaTap: (mediaCapture) {
-        OpenFile.open(mediaCapture.filePath);
-      },
     );
   }
 }

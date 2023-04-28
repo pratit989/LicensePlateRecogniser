@@ -167,7 +167,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               borderRadius: BorderRadius.circular(16.0),
                               child: Container(
                                 width: double.infinity,
-                                height: double.infinity,
                                 decoration: BoxDecoration(
                                   color: Color(0xCBFFFFFF),
                                   borderRadius: BorderRadius.circular(16.0),
