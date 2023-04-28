@@ -2,7 +2,7 @@ import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/upload_data.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +21,8 @@ class HomePageModel extends FlutterFlowModel {
 
   ///  State fields for stateful widgets in this page.
 
-  bool isDataUploading = false;
-  FFUploadedFile uploadedLocalFile =
-      FFUploadedFile(bytes: Uint8List.fromList([]));
-
+  // Stores action output result for [Custom Action - bytesFromFilePath] action in Container widget.
+  String? byteData;
   // Stores action output result for [Backend Call - API (Read Number Plates from an Image)] action in Container widget.
   ApiCallResponse? apiResultrmk;
   // State field(s) for TextField widget.

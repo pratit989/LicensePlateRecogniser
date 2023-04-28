@@ -2,7 +2,7 @@ import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/upload_data.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (!(_model.isDataUploading || _model.apiCallInProgress))
+              if (!_model.apiCallInProgress)
                 Expanded(
                   child: Padding(
                     padding:
@@ -99,57 +99,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               _model.manualEntry = false;
                               _model.correctedNumber = '';
                             });
-                            final selectedMedia = await selectMedia(
-                              multiImage: false,
-                            );
-                            if (selectedMedia != null &&
-                                selectedMedia.every((m) => validateFileFormat(
-                                    m.storagePath, context))) {
-                              setState(() => _model.isDataUploading = true);
-                              var selectedUploadedFiles = <FFUploadedFile>[];
-
-                              try {
-                                showUploadMessage(
-                                  context,
-                                  'Uploading file...',
-                                  showLoading: true,
-                                );
-                                selectedUploadedFiles = selectedMedia
-                                    .map((m) => FFUploadedFile(
-                                          name: m.storagePath.split('/').last,
-                                          bytes: m.bytes,
-                                          height: m.dimensions?.height,
-                                          width: m.dimensions?.width,
-                                          blurHash: m.blurHash,
-                                        ))
-                                    .toList();
-                              } finally {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                                _model.isDataUploading = false;
-                              }
-                              if (selectedUploadedFiles.length ==
-                                  selectedMedia.length) {
-                                setState(() {
-                                  _model.uploadedLocalFile =
-                                      selectedUploadedFiles.first;
-                                });
-                                showUploadMessage(context, 'Success!');
-                              } else {
-                                setState(() {});
-                                showUploadMessage(
-                                    context, 'Failed to upload data');
-                                return;
-                              }
-                            }
-
                             setState(() {
                               _model.apiCallInProgress = true;
                             });
+                            _model.byteData = await actions.bytesFromFilePath(
+                              FFAppState().uploadedFilePath,
+                            );
                             _model.apiResultrmk = await PlateRecognizerAPIGroup
                                 .readNumberPlatesFromAnImageCall
                                 .call(
-                              upload: _model.uploadedLocalFile,
+                              upload: _model.byteData,
                             );
                             setState(() {
                               _model.apiCallInProgress = false;
@@ -208,7 +167,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     ),
                   ),
                 ),
-              if (!(_model.isDataUploading || _model.apiCallInProgress))
+              if (!_model.apiCallInProgress)
                 Expanded(
                   child: Padding(
                     padding:
@@ -399,7 +358,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     ),
                   ),
                 ),
-              if (_model.isDataUploading || _model.apiCallInProgress)
+              if (_model.apiCallInProgress)
                 Expanded(
                   child: Lottie.asset(
                     'assets/lottie_animations/Main_Scene.json',
