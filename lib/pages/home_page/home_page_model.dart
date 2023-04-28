@@ -7,9 +7,18 @@ import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class HomePageModel extends FlutterFlowModel {
+  ///  Local state fields for this page.
+
+  bool apiCallInProgress = false;
+
+  bool manualEntry = false;
+
+  String correctedNumber = ' ';
+
   ///  State fields for stateful widgets in this page.
 
   bool isDataUploading = false;

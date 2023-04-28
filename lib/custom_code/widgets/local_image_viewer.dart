@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
+// Set your widget name, define your parameter, and then add the
+// boilerplate code using the button on the right!
+
 class LocalImageViewer extends StatefulWidget {
   const LocalImageViewer({
     Key? key,
