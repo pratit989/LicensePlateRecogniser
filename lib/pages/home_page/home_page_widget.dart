@@ -175,12 +175,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       MediaQuery.of(context).size.width * 1.0,
                                   height:
                                       MediaQuery.of(context).size.height * 1.0,
-                                  child: custom_widgets.LocalImageViewer(
+                                  child: custom_widgets.Camera(
                                     width:
                                         MediaQuery.of(context).size.width * 1.0,
                                     height: MediaQuery.of(context).size.height *
                                         1.0,
-                                    imageData: _model.uploadedLocalFile,
                                   ),
                                 ),
                               ),
