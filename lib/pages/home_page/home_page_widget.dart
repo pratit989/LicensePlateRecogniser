@@ -1,4 +1,5 @@
 import '/backend/api_requests/api_calls.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -161,6 +162,34 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               width: MediaQuery.of(context).size.width * 1.0,
                               height: MediaQuery.of(context).size.height * 1.0,
                               imgFilePath: FFAppState().uploadedFilePath,
+                            ),
+                          ),
+                        if (FFAppState().uploadedFilePath != null &&
+                            FFAppState().uploadedFilePath != '')
+                          Align(
+                            alignment: AlignmentDirectional(1.0, -1.0),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  8.0, 8.0, 8.0, 8.0),
+                              child: FlutterFlowIconButton(
+                                borderColor: Colors.transparent,
+                                borderRadius: 8.0,
+                                borderWidth: 1.0,
+                                buttonSize: 40.0,
+                                fillColor: FlutterFlowTheme.of(context)
+                                    .primaryBackground,
+                                icon: Icon(
+                                  Icons.close,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  size: 20.0,
+                                ),
+                                onPressed: () async {
+                                  FFAppState().update(() {
+                                    FFAppState().uploadedFilePath = '';
+                                  });
+                                },
+                              ),
                             ),
                           ),
                       ],
