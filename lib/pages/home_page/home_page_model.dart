@@ -1,4 +1,3 @@
-import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -12,16 +11,12 @@ import 'package:provider/provider.dart';
 class HomePageModel extends FlutterFlowModel {
   ///  Local state fields for this page.
 
-  bool apiCallInProgress = false;
-
   bool manualEntry = false;
 
   String correctedNumber = ' ';
 
   ///  State fields for stateful widgets in this page.
 
-  // Stores action output result for [Backend Call - API (Read Number Plates from an Image)] action in Container widget.
-  ApiCallResponse? apiresponse;
   // State field(s) for TextField widget.
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;

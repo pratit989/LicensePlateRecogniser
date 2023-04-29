@@ -33,114 +33,134 @@ class Camera extends StatefulWidget {
     Key? key,
     this.width,
     this.height,
+    required this.resetManualEntry,
   }) : super(key: key);
 
   final double? width;
   final double? height;
+  final Future<dynamic> Function() resetManualEntry;
 
   @override
   _CameraState createState() => _CameraState();
 }
 
 class _CameraState extends State<Camera> {
+  bool refresh = false;
+
   @override
   Widget build(BuildContext context) {
-    return CameraAwesomeBuilder.custom(
-      builder: (cameraState, previewSize, previewRect) {
-        return StreamBuilder<MediaCapture?>(
-          stream: cameraState.captureState$,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return cameraState.when(
-                onPreparingCamera: (state) =>
-                    const Center(child: CircularProgressIndicator()),
-                onPhotoMode: (state) => Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AwesomeTopActions(
-                      state: state,
-                      children: [
-                        AwesomeFlashButton(
-                          state: state,
-                        ),
-                      ],
-                    ),
-                    AwesomeBottomActions(
-                      // CameraState is required
-                      state: state,
-                      // Padding around the bottom actions
-                      padding: const EdgeInsets.only(
-                        bottom: 16,
-                        left: 8,
-                        right: 8,
+    if (!refresh) {
+      return CameraAwesomeBuilder.custom(
+        builder: (cameraState, previewSize, previewRect) {
+          return StreamBuilder<MediaCapture?>(
+            stream: cameraState.captureState$,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return cameraState.when(
+                  onPreparingCamera: (state) =>
+                      const Center(child: CircularProgressIndicator()),
+                  onPhotoMode: (state) => Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AwesomeTopActions(
+                        state: state,
+                        children: [
+                          AwesomeFlashButton(
+                            state: state,
+                          ),
+                        ],
                       ),
-                      // Widget to the left of the captureButton
-                      left: Container(),
-                      // Widget to the right of the captureButton
-                      right: Container(),
-                      // Callback used by default values. Don't specify it if you override left and right widgets.
-                      onMediaTap: null,
+                      AwesomeBottomActions(
+                        // CameraState is required
+                        state: state,
+                        // Padding around the bottom actions
+                        padding: const EdgeInsets.only(
+                          bottom: 16,
+                          left: 8,
+                          right: 8,
+                        ),
+                        // Widget to the left of the captureButton
+                        left: Container(),
+                        // Widget to the right of the captureButton
+                        right: Container(),
+                        // Callback used by default values. Don't specify it if you override left and right widgets.
+                        onMediaTap: null,
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              File capturedImage = File(snapshot.requireData!.filePath);
+              if (snapshot.requireData!.status == MediaCaptureStatus.success) {
+                FlutterNativeImage.compressImage(capturedImage.path,
+                        quality: 60, percentage: 100)
+                    .then((compressedImage) {
+                  Uint8List byteData = compressedImage.readAsBytesSync();
+                  print((byteData.lengthInBytes / 1024) / 1024);
+                  PlateRecognizerAPIGroup.readNumberPlatesFromAnImageCall
+                      .call(
+                          upload: FFUploadedFile(bytes: byteData, name: "test"))
+                      .then((value) => FFAppState().update(() =>
+                          FFAppState().numberPlate = PlateRecognizerAPIGroup
+                              .readNumberPlatesFromAnImageCall
+                              .plateNumber(value.jsonBody)));
+                });
+                return Stack(
+                  children: [
+                    Image.file(capturedImage),
+                    Align(
+                      alignment: AlignmentDirectional(1, -1),
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 8,
+                          borderWidth: 1,
+                          buttonSize: 40,
+                          fillColor:
+                              FlutterFlowTheme.of(context).primaryBackground,
+                          icon: Icon(
+                            Icons.close,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 20,
+                          ),
+                          onPressed: () async {
+                            Future.delayed(
+                                Duration(),
+                                () => setState(() {
+                                      refresh = true;
+                                    }));
+                            // Navigator.of(context, rootNavigator:
+                            // true).push(MaterialPageRoute(builder: (builder) => HomePageWidget()));
+                          },
+                        ),
+                      ),
                     ),
                   ],
-                ),
-              );
-            }
+                );
+              }
 
-            File capturedImage = File(snapshot.requireData!.filePath);
-            if (snapshot.requireData!.status == MediaCaptureStatus.success) {
-              FlutterNativeImage.compressImage(capturedImage.path,
-                      quality: 60, percentage: 100)
-                  .then((compressedImage) {
-                Uint8List byteData = compressedImage.readAsBytesSync();
-                print((byteData.lengthInBytes / 1024) / 1024);
-                PlateRecognizerAPIGroup.readNumberPlatesFromAnImageCall
-                    .call(upload: FFUploadedFile(bytes: byteData, name: "test"))
-                    .then((value) => FFAppState().update(() =>
-                        FFAppState().numberPlate = PlateRecognizerAPIGroup
-                            .readNumberPlatesFromAnImageCall
-                            .plateNumber(value.jsonBody)));
-              });
-              return Stack(
-                children: [
-                  Align(
-                    alignment: AlignmentDirectional(1, -1),
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                      child: FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 8,
-                        borderWidth: 1,
-                        buttonSize: 40,
-                        fillColor:
-                            FlutterFlowTheme.of(context).primaryBackground,
-                        icon: Icon(
-                          Icons.close,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          size: 20,
-                        ),
-                        onPressed: () async {
-                          context.goNamed('HomePage');
-                        },
-                      ),
-                    ),
-                  ),
-                  Image.file(capturedImage),
-                ],
-              );
-            }
-
-            return const Center(child: CircularProgressIndicator());
-          },
-        );
-      },
-      saveConfig: SaveConfig.photo(
-        pathBuilder: () => path(CaptureMode.photo),
-      ),
-      enablePhysicalButton: true,
-      filter: AwesomeFilter.None,
-      flashMode: FlashMode.auto,
-      aspectRatio: CameraAspectRatios.ratio_1_1,
-      previewFit: CameraPreviewFit.fitWidth,
-    );
+              return const Center(child: CircularProgressIndicator());
+            },
+          );
+        },
+        saveConfig: SaveConfig.photo(
+          pathBuilder: () => path(CaptureMode.photo),
+        ),
+        enablePhysicalButton: true,
+        filter: AwesomeFilter.None,
+        flashMode: FlashMode.auto,
+        aspectRatio: CameraAspectRatios.ratio_1_1,
+        previewFit: CameraPreviewFit.fitWidth,
+      );
+    } else {
+      Future.delayed(
+          Duration(seconds: 1),
+          () => setState(() {
+                refresh = false;
+              }));
+      return const Center(child: CircularProgressIndicator());
+    }
   }
 }

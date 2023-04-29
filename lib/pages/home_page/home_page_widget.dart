@@ -1,4 +1,3 @@
-import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -58,84 +57,63 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 child: Padding(
                   padding:
                       EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      setState(() {
-                        _model.manualEntry = false;
-                        _model.correctedNumber = '';
-                      });
-                      _model.apiresponse = await PlateRecognizerAPIGroup
-                          .readNumberPlatesFromAnImageCall
-                          .call();
-                      setState(() {
-                        FFAppState().numberPlate = PlateRecognizerAPIGroup
-                            .readNumberPlatesFromAnImageCall
-                            .plateNumber(
-                              (_model.apiresponse?.jsonBody ?? ''),
-                            )
-                            .toString();
-                      });
-
-                      setState(() {});
-                    },
-                    child: Material(
-                      color: Colors.transparent,
-                      elevation: 500.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16.0),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Color(0xCBFFFFFF),
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                          child: Stack(
-                            children: [
-                              Container(
+                  child: Material(
+                    color: Colors.transparent,
+                    elevation: 500.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16.0),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Color(0xCBFFFFFF),
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 1.0,
+                              height: MediaQuery.of(context).size.height * 1.0,
+                              child: custom_widgets.Camera(
                                 width: MediaQuery.of(context).size.width * 1.0,
                                 height:
                                     MediaQuery.of(context).size.height * 1.0,
-                                child: custom_widgets.Camera(
-                                  width:
-                                      MediaQuery.of(context).size.width * 1.0,
-                                  height:
-                                      MediaQuery.of(context).size.height * 1.0,
-                                ),
+                                resetManualEntry: () async {
+                                  setState(() {
+                                    _model.manualEntry = false;
+                                    _model.correctedNumber = ' ';
+                                  });
+                                },
                               ),
-                              if (false)
-                                Align(
-                                  alignment: AlignmentDirectional(1.0, -1.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 8.0, 8.0, 8.0),
-                                    child: FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 8.0,
-                                      borderWidth: 1.0,
-                                      buttonSize: 40.0,
-                                      fillColor: FlutterFlowTheme.of(context)
-                                          .primaryBackground,
-                                      icon: Icon(
-                                        Icons.close,
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        size: 20.0,
-                                      ),
-                                      onPressed: () async {
-                                        context.goNamed('HomePage');
-                                      },
+                            ),
+                            if (false)
+                              Align(
+                                alignment: AlignmentDirectional(1.0, -1.0),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      8.0, 8.0, 8.0, 8.0),
+                                  child: FlutterFlowIconButton(
+                                    borderColor: Colors.transparent,
+                                    borderRadius: 8.0,
+                                    borderWidth: 1.0,
+                                    buttonSize: 40.0,
+                                    fillColor: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      size: 20.0,
                                     ),
+                                    onPressed: () async {
+                                      context.goNamed('HomePage');
+                                    },
                                   ),
                                 ),
-                            ],
-                          ),
+                              ),
+                          ],
                         ),
                       ),
                     ),
