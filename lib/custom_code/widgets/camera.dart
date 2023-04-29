@@ -84,8 +84,15 @@ class _CameraState extends State<Camera> {
             }
 
             File capturedImage = File(snapshot.requireData!.filePath);
-            PlateRecognizerAPIGroup.readNumberPlatesFromAnImageCall.call(
-                upload: FFUploadedFile(bytes: capturedImage.readAsBytesSync()));
+            PlateRecognizerAPIGroup.readNumberPlatesFromAnImageCall
+                .call(
+                    upload:
+                        FFUploadedFile(bytes: capturedImage.readAsBytesSync()))
+                .then((value) => FFAppState().update(() =>
+                    FFAppState().numberPlate = PlateRecognizerAPIGroup
+                        .readNumberPlatesFromAnImageCall
+                        .plateNumber(value)
+                        .toString()));
             return Image.file(capturedImage);
           },
         );
