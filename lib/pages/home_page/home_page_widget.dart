@@ -56,82 +56,56 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               Expanded(
                 child: Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 0.0),
-                  child: Stack(
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Icon(
-                            Icons.camera_alt_outlined,
-                            color: FlutterFlowTheme.of(context).primaryText,
-                            size: 60.0,
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 16.0, 0.0, 0.0),
-                            child: Text(
-                              'Capture License Plate',
-                              textAlign: TextAlign.center,
-                              style: FlutterFlowTheme.of(context)
-                                  .titleLarge
-                                  .override(
-                                    fontFamily: 'Poppins',
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                  ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      InkWell(
-                        splashColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: () async {
-                          setState(() {
-                            _model.manualEntry = false;
-                            _model.correctedNumber = '';
-                          });
-                          _model.apiResultrmk = await PlateRecognizerAPIGroup
-                              .readNumberPlatesFromAnImageCall
-                              .call();
+                      EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
+                      setState(() {
+                        _model.manualEntry = false;
+                        _model.correctedNumber = '';
+                      });
+                      _model.apiresponse = await PlateRecognizerAPIGroup
+                          .readNumberPlatesFromAnImageCall
+                          .call();
+                      setState(() {
+                        FFAppState().numberPlate = PlateRecognizerAPIGroup
+                            .readNumberPlatesFromAnImageCall
+                            .plateNumber(
+                              (_model.apiresponse?.jsonBody ?? ''),
+                            )
+                            .toString();
+                      });
 
-                          setState(() {});
-                        },
-                        child: Material(
-                          color: Colors.transparent,
-                          elevation: 500.0,
-                          shape: RoundedRectangleBorder(
+                      setState(() {});
+                    },
+                    child: Material(
+                      color: Colors.transparent,
+                      elevation: 500.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16.0),
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Color(0xCBFFFFFF),
                             borderRadius: BorderRadius.circular(16.0),
                           ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16.0),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Color(0xCBFFFFFF),
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 1.0,
-                                height:
-                                    MediaQuery.of(context).size.height * 1.0,
-                                child: custom_widgets.Camera(
-                                  width:
-                                      MediaQuery.of(context).size.width * 1.0,
-                                  height:
-                                      MediaQuery.of(context).size.height * 1.0,
-                                ),
-                              ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 1.0,
+                            height: MediaQuery.of(context).size.height * 1.0,
+                            child: custom_widgets.Camera(
+                              width: MediaQuery.of(context).size.width * 1.0,
+                              height: MediaQuery.of(context).size.height * 1.0,
                             ),
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -159,7 +133,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               child: Text(
                                 (String? plateNumber) {
                                   return (plateNumber ?? "").toUpperCase();
-                                }(FFAppState().numberPlate),
+                                }((_model.manualEntry &&
+                                        (_model.correctedNumber != null &&
+                                            _model.correctedNumber != '')
+                                    ? _model.correctedNumber
+                                    : FFAppState().numberPlate)),
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 style: FlutterFlowTheme.of(context)

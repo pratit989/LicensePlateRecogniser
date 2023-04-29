@@ -14,6 +14,8 @@ import 'package:camerawesome/pigeon.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import '../../backend/api_requests/api_calls.dart';
+import 'package:image/image.dart' hide Image;
+import 'package:flutter_native_image/flutter_native_image.dart';
 
 Future<String> path(CaptureMode captureMode) async {
   final Directory extDir = await getTemporaryDirectory();
@@ -84,16 +86,52 @@ class _CameraState extends State<Camera> {
             }
 
             File capturedImage = File(snapshot.requireData!.filePath);
-            PlateRecognizerAPIGroup.readNumberPlatesFromAnImageCall
-                .call(
-                    upload:
-                        FFUploadedFile(bytes: capturedImage.readAsBytesSync()))
-                .then((value) => FFAppState().update(() =>
-                    FFAppState().numberPlate = PlateRecognizerAPIGroup
-                        .readNumberPlatesFromAnImageCall
-                        .plateNumber(value)
-                        .toString()));
-            return Image.file(capturedImage);
+            if (snapshot.requireData!.status == MediaCaptureStatus.success) {
+              FlutterNativeImage.compressImage(capturedImage.path,
+                      quality: 60, percentage: 100)
+                  .then((compressedImage) {
+                Uint8List byteData = compressedImage.readAsBytesSync();
+                print((byteData.lengthInBytes / 1024) / 1024);
+                PlateRecognizerAPIGroup.readNumberPlatesFromAnImageCall
+                    .call(upload: FFUploadedFile(bytes: byteData, name: "test"))
+                    .then((value) => FFAppState().update(() =>
+                        FFAppState().numberPlate = PlateRecognizerAPIGroup
+                            .readNumberPlatesFromAnImageCall
+                            .plateNumber(value.jsonBody)));
+              });
+              return Stack(
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional(1, -1),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+                      child: FlutterFlowIconButton(
+                        borderColor: Colors.transparent,
+                        borderRadius: 8,
+                        borderWidth: 1,
+                        buttonSize: 40,
+                        fillColor:
+                            FlutterFlowTheme.of(context).primaryBackground,
+                        icon: Icon(
+                          Icons.close,
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          size: 20,
+                        ),
+                        onPressed: () async {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (builder) => HomePageWidget()));
+                        },
+                      ),
+                    ),
+                  ),
+                  Image.file(capturedImage),
+                ],
+              );
+            }
+
+            return const Center(child: CircularProgressIndicator());
           },
         );
       },

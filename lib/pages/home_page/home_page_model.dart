@@ -20,7 +20,7 @@ class HomePageModel extends FlutterFlowModel {
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Backend Call - API (Read Number Plates from an Image)] action in Container widget.
-  ApiCallResponse? apiResultrmk;
+  ApiCallResponse? apiresponse;
   // State field(s) for TextField widget.
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
