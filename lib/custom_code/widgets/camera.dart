@@ -141,6 +141,7 @@ class _CameraState extends State<Camera> {
                             size: 20,
                           ),
                           onPressed: () async {
+                            widget.resetManualEntry();
                             Future.delayed(
                                 Duration(),
                                 () => setState(() {
