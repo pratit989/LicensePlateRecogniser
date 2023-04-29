@@ -49,12 +49,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: Padding(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
                   padding:
                       EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
                   child: Material(
@@ -66,7 +66,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16.0),
                       child: Container(
-                        width: double.infinity,
+                        width: MediaQuery.of(context).size.width * 1.0,
+                        height: MediaQuery.of(context).size.height * 0.5,
                         decoration: BoxDecoration(
                           color: Color(0xCBFFFFFF),
                           borderRadius: BorderRadius.circular(16.0),
@@ -119,10 +120,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
+                Padding(
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 0.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -300,8 +300,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
