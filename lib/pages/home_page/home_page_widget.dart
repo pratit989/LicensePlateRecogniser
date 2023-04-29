@@ -159,16 +159,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               child: Text(
                                 (String? plateNumber) {
                                   return (plateNumber ?? "").toUpperCase();
-                                }((_model.manualEntry &&
-                                        (_model.correctedNumber != null &&
-                                            _model.correctedNumber != '')
-                                    ? _model.correctedNumber
-                                    : PlateRecognizerAPIGroup
-                                        .readNumberPlatesFromAnImageCall
-                                        .plateNumber(
-                                          (_model.apiResultrmk?.jsonBody ?? ''),
-                                        )
-                                        .toString())),
+                                }(FFAppState().numberPlate),
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 style: FlutterFlowTheme.of(context)
