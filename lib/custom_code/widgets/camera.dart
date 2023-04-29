@@ -16,6 +16,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../backend/api_requests/api_calls.dart';
 import 'package:image/image.dart' hide Image;
 import 'package:flutter_native_image/flutter_native_image.dart';
+import '../../flutter_flow/flutter_flow_icon_button.dart';
 
 Future<String> path(CaptureMode captureMode) async {
   final Directory extDir = await getTemporaryDirectory();
@@ -118,10 +119,7 @@ class _CameraState extends State<Camera> {
                           size: 20,
                         ),
                         onPressed: () async {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (builder) => HomePageWidget()));
+                          context.goNamed('HomePage');
                         },
                       ),
                     ),
