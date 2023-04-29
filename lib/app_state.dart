@@ -25,10 +25,10 @@ class FFAppState extends ChangeNotifier {
 
   late SharedPreferences prefs;
 
-  String _uploadedFilePath = '';
-  String get uploadedFilePath => _uploadedFilePath;
-  set uploadedFilePath(String _value) {
-    _uploadedFilePath = _value;
+  String _numberPlate = '';
+  String get numberPlate => _numberPlate;
+  set numberPlate(String _value) {
+    _numberPlate = _value;
   }
 }
 

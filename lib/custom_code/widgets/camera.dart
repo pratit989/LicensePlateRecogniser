@@ -13,6 +13,7 @@ import 'package:camerawesome/generated/i18n.dart';
 import 'package:camerawesome/pigeon.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import '../../backend/api_requests/api_calls.dart';
 
 Future<String> path(CaptureMode captureMode) async {
   final Directory extDir = await getTemporaryDirectory();
@@ -81,7 +82,11 @@ class _CameraState extends State<Camera> {
                 ),
               );
             }
-            return Image.file(File(snapshot.requireData!.filePath));
+
+            File capturedImage = File(snapshot.requireData!.filePath);
+            PlateRecognizerAPIGroup.readNumberPlatesFromAnImageCall.call(
+                upload: FFUploadedFile(bytes: capturedImage.readAsBytesSync()));
+            return Image.file(capturedImage);
           },
         );
       },

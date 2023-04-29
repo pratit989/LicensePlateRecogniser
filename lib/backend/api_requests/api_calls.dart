@@ -22,7 +22,7 @@ class PlateRecognizerAPIGroup {
 
 class ReadNumberPlatesFromAnImageCall {
   Future<ApiCallResponse> call({
-    String? upload = '',
+    FFUploadedFile? upload,
     String? uploadUrl = '',
   }) {
     return ApiManager.instance.makeApiCall(
