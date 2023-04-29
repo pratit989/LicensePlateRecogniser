@@ -21,7 +21,6 @@ Future<String> path(CaptureMode captureMode) async {
   final String fileExtension = captureMode == CaptureMode.photo ? 'jpg' : 'mp4';
   final String filePath =
       '${testDir.path}/${DateTime.now().millisecondsSinceEpoch}.$fileExtension';
-  FFAppState().update(() => FFAppState().uploadedFilePath = filePath);
   return filePath;
 }
 
@@ -44,38 +43,46 @@ class _CameraState extends State<Camera> {
   Widget build(BuildContext context) {
     return CameraAwesomeBuilder.custom(
       builder: (cameraState, previewSize, previewRect) {
-        return cameraState.when(
-          onPreparingCamera: (state) =>
-              const Center(child: CircularProgressIndicator()),
-          onPhotoMode: (state) => Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AwesomeTopActions(
-                state: state,
-                children: [
-                  AwesomeFlashButton(
-                    state: state,
-                  ),
-                ],
-              ),
-              AwesomeBottomActions(
-                // CameraState is required
-                state: state,
-                // Padding around the bottom actions
-                padding: const EdgeInsets.only(
-                  bottom: 16,
-                  left: 8,
-                  right: 8,
+        return StreamBuilder<MediaCapture?>(
+          stream: cameraState.captureState$,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return cameraState.when(
+                onPreparingCamera: (state) =>
+                    const Center(child: CircularProgressIndicator()),
+                onPhotoMode: (state) => Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AwesomeTopActions(
+                      state: state,
+                      children: [
+                        AwesomeFlashButton(
+                          state: state,
+                        ),
+                      ],
+                    ),
+                    AwesomeBottomActions(
+                      // CameraState is required
+                      state: state,
+                      // Padding around the bottom actions
+                      padding: const EdgeInsets.only(
+                        bottom: 16,
+                        left: 8,
+                        right: 8,
+                      ),
+                      // Widget to the left of the captureButton
+                      left: Container(),
+                      // Widget to the right of the captureButton
+                      right: Container(),
+                      // Callback used by default values. Don't specify it if you override left and right widgets.
+                      onMediaTap: null,
+                    ),
+                  ],
                 ),
-                // Widget to the left of the captureButton
-                left: Container(),
-                // Widget to the right of the captureButton
-                right: Container(),
-                // Callback used by default values. Don't specify it if you override left and right widgets.
-                onMediaTap: null,
-              ),
-            ],
-          ),
+              );
+            }
+            return Image.file(File(snapshot.requireData!.filePath));
+          },
         );
       },
       saveConfig: SaveConfig.photo(
