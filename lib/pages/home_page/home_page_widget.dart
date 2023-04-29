@@ -181,7 +181,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 },
                                 text: 'Number Correct',
                                 options: FFButtonOptions(
-                                  width: 130.0,
+                                  width: 140.0,
                                   height: 40.0,
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -209,7 +209,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               },
                               text: 'Enter Manually',
                               options: FFButtonOptions(
-                                width: 130.0,
+                                width: 140.0,
                                 height: 40.0,
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 0.0),

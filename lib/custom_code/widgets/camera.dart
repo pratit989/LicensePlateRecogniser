@@ -46,6 +46,7 @@ class Camera extends StatefulWidget {
 
 class _CameraState extends State<Camera> {
   bool refresh = false;
+  bool processingImage = true;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,7 @@ class _CameraState extends State<Camera> {
           return StreamBuilder<MediaCapture?>(
             stream: cameraState.captureState$,
             builder: (context, snapshot) {
-              if (!snapshot.hasData) {
+              if (!snapshot.hasData && processingImage) {
                 return cameraState.when(
                   onPreparingCamera: (state) =>
                       const Center(child: CircularProgressIndicator()),
@@ -98,17 +99,31 @@ class _CameraState extends State<Camera> {
                     .then((compressedImage) {
                   Uint8List byteData = compressedImage.readAsBytesSync();
                   print((byteData.lengthInBytes / 1024) / 1024);
-                  PlateRecognizerAPIGroup.readNumberPlatesFromAnImageCall
-                      .call(
-                          upload: FFUploadedFile(bytes: byteData, name: "test"))
-                      .then((value) => FFAppState().update(() =>
-                          FFAppState().numberPlate = PlateRecognizerAPIGroup
-                              .readNumberPlatesFromAnImageCall
-                              .plateNumber(value.jsonBody)));
+                  if (processingImage) {
+                    PlateRecognizerAPIGroup.readNumberPlatesFromAnImageCall
+                        .call(
+                            upload:
+                                FFUploadedFile(bytes: byteData, name: "test"))
+                        .then((value) {
+                      Future.delayed(
+                          Duration(),
+                          () => setState(() {
+                                processingImage = false;
+                              }));
+                      FFAppState().update(() {
+                        FFAppState().numberPlate = PlateRecognizerAPIGroup
+                            .readNumberPlatesFromAnImageCall
+                            .plateNumber(value.jsonBody);
+                      });
+                    });
+                  }
                 });
                 return Stack(
                   children: [
                     Image.file(capturedImage),
+                    processingImage
+                        ? const Center(child: CircularProgressIndicator())
+                        : Container(),
                     Align(
                       alignment: AlignmentDirectional(1, -1),
                       child: Padding(
@@ -130,7 +145,11 @@ class _CameraState extends State<Camera> {
                                 Duration(),
                                 () => setState(() {
                                       refresh = true;
+                                      processingImage = true;
                                     }));
+                            FFAppState().update(() {
+                              FFAppState().numberPlate = "";
+                            });
                             // Navigator.of(context, rootNavigator:
                             // true).push(MaterialPageRoute(builder: (builder) => HomePageWidget()));
                           },
